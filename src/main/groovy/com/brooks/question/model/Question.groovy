@@ -5,9 +5,10 @@ package com.brooks.question.model
 
 class Question {
 
-    long id
+    Long id
+    Date date
     String name
     String question
-    Date questionAskedDate = new Date()
-    Answer answer
+    String answer
+
 }

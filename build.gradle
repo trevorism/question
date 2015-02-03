@@ -10,6 +10,19 @@ dependencies{
     compile 'org.glassfish.jersey.containers:jersey-container-servlet:2.15'
     compile 'org.glassfish.jersey.media:jersey-media-json-jackson:2.15'
     compile 'com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:2.5.0'
-
+    compile 'redis.clients:jedis:2.6.2'
     testCompile 'junit:junit:4.12'
+}
+
+if(project.hasProperty("deployLoc")){
+    task deploy(type: Copy){
+        dependsOn build
+
+        println "$deployLoc/question"
+        doFirst{
+            delete ("$deployLoc/question", "$deployLoc/question.war")
+        }
+        from "$buildDir/libs"
+        into deployLoc
+    }
 }

@@ -4,9 +4,7 @@ package com.brooks.question.model
  * @author tbrooks
  */
 class Answer {
-
-    Question question;
+    long id;
     String answer;
-    Date dateAnswered;
-
+    Date date;
 }
