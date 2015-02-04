@@ -57,7 +57,7 @@ class QuestionEndpoint {
     @Path("unanswered")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    List<Question> getUnansweredQuestions(){
+    Set<String> getUnansweredQuestions(){
         throw new WebApplicationException(404);
     }
 

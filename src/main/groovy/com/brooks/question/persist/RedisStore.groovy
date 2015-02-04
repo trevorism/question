@@ -14,6 +14,7 @@ class RedisStore implements Store {
     public static final String ALL_QUESTIONS_QUERY = "question/*"
     public static final String NEXT_KEY = "nextkey"
     public static final String DATE_FORMAT = "yyMMddhhmmss"
+    public static final String UNANSWERED_KEY = "unanswered"
     private final Jedis jedis;
 
     RedisStore() {
@@ -47,13 +48,14 @@ class RedisStore implements Store {
     String createQuestion(Question question) {
         redisTransaction {
             Long id = jedis.incr(NEXT_KEY)
-            String key = "question/$id"
+            String key = questionKey(id)
             if (!question.name?.trim())
                 question.name = "Anonymous"
 
             jedis.hset(key, "date", new Date().format(DATE_FORMAT))
             jedis.hset(key, "question", question.question)
             jedis.hset(key, "name", question.name)
+            jedis.sadd(UNANSWERED_KEY, key)
             return key
         }
 
@@ -65,23 +67,27 @@ class RedisStore implements Store {
     }
 
     @Override
-    List<Question> getUnansweredQuestions() {
-        return null
+    Set<String> getUnansweredQuestions() {
+        redisTransaction {
+            String key = UNANSWERED_KEY
+            return jedis.smembers(key)
+        }
     }
 
     @Override
     void answerQuestion(String id, Answer answer) {
-        String key = "answer/$id"
+        String key = answerKey(id)
         redisTransaction {
             jedis.hset(key, "date", new Date().format(DATE_FORMAT))
             jedis.hset(key, "answer", answer.answer)
+            jedis.srem(UNANSWERED_KEY, questionKey(id))
         }
     }
 
     @Override
     boolean deleteQuestion(String id) {
         redisTransaction {
-            String key = "question/$id"
+            String key = questionKey(id)
             return jedis.del(key) > 0
         }
     }
@@ -89,10 +95,18 @@ class RedisStore implements Store {
     @Override
     boolean deleteAnswer(String id) {
         redisTransaction {
-            String key = "answer/$id"
+            String key = answerKey(id)
             return jedis.del(key) > 0
         }
 
+    }
+
+    private String questionKey(def id) {
+        "question/$id"
+    }
+
+    private String answerKey(def id) {
+        "answer/$id"
     }
 
     private String getAnswerFromStore(String id) {
@@ -102,7 +116,7 @@ class RedisStore implements Store {
     }
 
     private Question createQuestionFromStore(String id) {
-        String key = "question/$id"
+        String key = questionKey(id)
         Map<String, String> data = jedis.hgetAll(key)
         def longId = Long.parseLong(id)
         def name = data.get("name")
