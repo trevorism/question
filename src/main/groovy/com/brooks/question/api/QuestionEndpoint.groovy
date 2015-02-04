@@ -57,7 +57,7 @@ class QuestionEndpoint {
     @Path("unanswered")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    Set<String> getUnansweredQuestions(){
+    List<Question> getUnansweredQuestions(){
         redisStore.getUnansweredQuestions()
     }
 
@@ -67,6 +67,7 @@ class QuestionEndpoint {
     @Consumes(MediaType.APPLICATION_JSON)
     Response answerQuestion(@PathParam("id") String id, Answer answer){
         redisStore.answerQuestion(id, answer)
+        return Response.ok()
     }
 
     @PUT
@@ -75,17 +76,18 @@ class QuestionEndpoint {
     @Consumes(MediaType.APPLICATION_JSON)
     Response updateAnswer(@PathParam("id") String id, Answer answer){
         redisStore.answerQuestion(id, answer)
+        return Response.ok()
     }
 
     @DELETE
     @Path("{id}")
-    Response deleteQuestion(@PathParam("id") String id){
+    boolean deleteQuestion(@PathParam("id") String id){
         redisStore.deleteQuestion(id)
     }
 
     @DELETE
     @Path("answer/{id}")
-    Response deleteAnswer(@PathParam("id") String id){
+    boolean deleteAnswer(@PathParam("id") String id){
         redisStore.deleteAnswer(id)
     }
 

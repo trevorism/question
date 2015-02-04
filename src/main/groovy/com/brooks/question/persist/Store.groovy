@@ -12,7 +12,7 @@ interface Store {
     Question getQuestion(String id)
     String createQuestion(Question question)
     List<Question> searchQuestions(String query)
-    Set<String> getUnansweredQuestions()
+    List<Question> getUnansweredQuestions()
     void answerQuestion(String id, Answer answer)
 
     boolean deleteQuestion(String id)

@@ -5,6 +5,7 @@ import com.brooks.question.model.Question
 import redis.clients.jedis.Jedis
 
 import java.text.SimpleDateFormat
+import static com.brooks.question.persist.RedisUtils.*
 
 /**
  * @author tbrooks
@@ -38,7 +39,7 @@ class RedisStore implements Store {
     @Override
     Question getQuestion(final String id) {
         redisTransaction {
-            Question question = createQuestionFromStore(id)
+            Question question = createQuestionFromId(id)
             question.answer = getAnswerFromStore(id)
             return question
         }
@@ -67,10 +68,19 @@ class RedisStore implements Store {
     }
 
     @Override
-    Set<String> getUnansweredQuestions() {
+    List<Question> getUnansweredQuestions() {
         redisTransaction {
             String key = UNANSWERED_KEY
-            return jedis.smembers(key)
+            Set<String> members = jedis.smembers(key)
+            List<Question> questions = new LinkedList<>()
+            for(String questionKey : members){
+                String id = RedisUtils.idFromQuestionKey(questionKey)
+                Question question = createQuestionFromId(id)
+                questions.add(question)
+            }
+            return questions.sort{ a,b ->
+                b.date <=> a.date
+            }
         }
     }
 
@@ -88,6 +98,7 @@ class RedisStore implements Store {
     boolean deleteQuestion(String id) {
         redisTransaction {
             String key = questionKey(id)
+            jedis.srem(UNANSWERED_KEY, key)
             return jedis.del(key) > 0
         }
     }
@@ -102,21 +113,13 @@ class RedisStore implements Store {
 
     }
 
-    private String questionKey(def id) {
-        "question/$id"
-    }
-
-    private String answerKey(def id) {
-        "answer/$id"
-    }
-
     private String getAnswerFromStore(String id) {
         String answerKey = "answer/$id"
         Map<String, String> answerData = jedis.hgetAll(answerKey);
         return answerData.get("answer")
     }
 
-    private Question createQuestionFromStore(String id) {
+    private Question createQuestionFromId(String id) {
         String key = questionKey(id)
         Map<String, String> data = jedis.hgetAll(key)
         def longId = Long.parseLong(id)
@@ -126,10 +129,5 @@ class RedisStore implements Store {
         return new Question(id: longId, name: name, question: questionText, date: date)
     }
 
-    private Date getDateFromData(Map<String, String> data) {
-        def date = null
-        if (data.get("date"))
-            date = new SimpleDateFormat(DATE_FORMAT).parse(data.get("date"))
-        return date
-    }
+
 }
