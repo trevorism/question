@@ -58,7 +58,7 @@ class QuestionEndpoint {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     Set<String> getUnansweredQuestions(){
-        throw new WebApplicationException(404);
+        redisStore.getUnansweredQuestions()
     }
 
     @POST

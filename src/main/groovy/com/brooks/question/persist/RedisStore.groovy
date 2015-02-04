@@ -96,6 +96,7 @@ class RedisStore implements Store {
     boolean deleteAnswer(String id) {
         redisTransaction {
             String key = answerKey(id)
+            jedis.sadd(UNANSWERED_KEY, questionKey(id))
             return jedis.del(key) > 0
         }
 
