@@ -57,7 +57,7 @@ class RedisStore implements Store {
             jedis.hset(key, "question", question.question)
             jedis.hset(key, "name", question.name)
             jedis.sadd(UNANSWERED_KEY, key)
-            return key
+            return id.toString()
         }
 
     }

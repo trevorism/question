@@ -21,8 +21,6 @@ war{
 if(project.hasProperty("deployLoc")){
     task deploy(type: Copy){
         dependsOn build
-
-        println "$deployLoc/question"
         doFirst{
             delete ("$deployLoc/question", "$deployLoc/question.war")
         }
