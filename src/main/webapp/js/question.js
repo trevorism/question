@@ -18,10 +18,7 @@ $( document ).ready(function() {
                 alert("succses" + data);
                 console.log(data);
             },
-            error: function(err, status, error){
-              alert("error " + status + " " + error);
-                console.log(err);
-            }
+
         });
     });
 
