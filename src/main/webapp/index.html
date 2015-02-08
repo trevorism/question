@@ -1,56 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Bootstrap -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/question.css" rel="stylesheet">
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/question.js"></script>
-
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
+    <meta charset="UTF-8"/>
+    <meta http-equiv="refresh" content="0;url=home.jsp"/>
+    <script type="text/javascript">
+        window.location.href = "home.jsp"
+    </script>
 </head>
-<body>
-
-<div class="titleBar">
-    <div class="leftAlignBar">
-        <a class="linkPadding" href="index.html">Home</a>
-        <a class="linkPadding" href="faq.html">FAQ</a>
-        <a class="linkPadding" href="display.html">Latest</a>
-        <a class="linkPadding" href="donate.html">Donate</a>
-    </div>
-    <div class="rightAlign">
-        <input type="text" id="searchId" />
-        <button id="searchButton" class="btn btn-default">Search</button>
-    </div>
-</div>
-
-<div class="container">
-    <div class="jumbotron">
-        <h2>Ask a Question</h2>
-        <p>I know the answer to your question. It's just a matter of time before you get the answer.</p>
-    </div>
-
-
-    <div class="form-group">
-        <label for="nameId">Name</label>
-        <input type="text" class="form-control" id="nameId" placeholder="Optional Name" />
-    </div>
-    <div class="form-group">
-        <label for="questionId">Question</label>
-        <textarea id="questionId" class="form-control" rows="5"></textarea>
-    </div>
-    <button id="submitButton" class="btn btn-primary">Submit</button>
-
-</div>
-
-</body>
 </html>

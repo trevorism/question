@@ -22,20 +22,13 @@
 
 <div class="titleBar">
     <div class="leftAlignBar">
-        <a class="linkPadding" href="index.html">Home</a>
-        <a class="linkPadding" href="faq.html">FAQ</a>
-        <a class="linkPadding" href="display.html">Latest</a>
-        <a class="linkPadding" href="donate.html">Donate</a>
+        <a class="linkPadding" href="home.jsp">Home</a>
+        <a class="linkPadding" href="faq.jsp">FAQ</a>
+        <a class="linkPadding" href="display.jsp">Latest</a>
+        <a class="linkPadding" href="donate.jsp">Donate</a>
     </div>
     <div class="rightAlign">
         <input type="text" id="searchId" />
         <button id="searchButton" class="btn btn-default">Search</button>
     </div>
 </div>
-
-<div class="container">
-    <h2>Display</h2>
-</div>
-
-</body>
-</html>
