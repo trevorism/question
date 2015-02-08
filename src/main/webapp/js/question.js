@@ -1,8 +1,6 @@
 
 $( document ).ready(function() {
 
-
-
     $('#submitButton').click(function(){
         var data = {};
         data.name = $("#nameId").val();
@@ -15,9 +13,8 @@ $( document ).ready(function() {
             dataType: 'text',
             data: JSON.stringify(data),
             success: function(data){
-                alert("succses" + data);
-                console.log(data);
-            },
+
+            }
 
         });
     });

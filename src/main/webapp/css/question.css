@@ -8,7 +8,6 @@ textarea {
 }
 
 .leftAlignBar{
-    margin-top: 7px;
     float: left;
     text-align: left;
 }
@@ -16,6 +15,11 @@ textarea {
 .rightAlign{
     float: right;
     text-align: right;
+    padding-right: 5px;
+}
+
+.alignMiddleForBootstrap {
+    margin-top: 7px;
 }
 
 .linkPadding{

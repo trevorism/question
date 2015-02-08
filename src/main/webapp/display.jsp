@@ -1,7 +1,15 @@
 <%@include file="include/header.jsp" %>
 
-<div class="container">
-    <h2>Display</h2>
-</div>
+<script>
+
+    $(function() {
+        renderQuestion.render("renderQuestionOne", 2);
+    });
+
+</script>
+
+<span id="renderQuestionOne"></span>
+
+
 
 <%@include file="include/footer.jsp" %>

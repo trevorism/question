@@ -12,6 +12,8 @@
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="js/bootstrap.min.js"></script>
     <script src="js/question.js"></script>
+    <script src="js/moment.min.js"></script>
+    <script src="js/renderQuestion.js"></script>
 
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
@@ -21,8 +23,8 @@
 <body>
 
 <div class="titleBar">
-    <div class="leftAlignBar">
-        <a class="linkPadding" href="home.jsp">Home</a>
+    <div class="leftAlignBar alignMiddleForBootstrap">
+        <a class="linkPadding" href="home.jsp">Ask a Question</a>
         <a class="linkPadding" href="faq.jsp">FAQ</a>
         <a class="linkPadding" href="display.jsp">Latest</a>
         <a class="linkPadding" href="donate.jsp">Donate</a>

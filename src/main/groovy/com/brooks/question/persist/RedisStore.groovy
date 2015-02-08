@@ -4,7 +4,6 @@ import com.brooks.question.model.Answer
 import com.brooks.question.model.Question
 import redis.clients.jedis.Jedis
 
-import java.text.SimpleDateFormat
 import static com.brooks.question.persist.RedisUtils.*
 
 /**
@@ -14,7 +13,7 @@ class RedisStore implements Store {
 
     public static final String ALL_QUESTIONS_QUERY = "question/*"
     public static final String NEXT_KEY = "nextkey"
-    public static final String DATE_FORMAT = "yyMMddhhmmss"
+    public static final String DATE_FORMAT = "yyMMddHHmmss"
     public static final String UNANSWERED_KEY = "unanswered"
     private final Jedis jedis;
 

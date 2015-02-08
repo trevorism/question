@@ -63,7 +63,6 @@ class QuestionEndpoint {
 
     @POST
     @Path("{id}/answer")
-    @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     Response answerQuestion(@PathParam("id") String id, Answer answer){
         redisStore.answerQuestion(id, answer)
@@ -72,7 +71,6 @@ class QuestionEndpoint {
 
     @PUT
     @Path("{id}/answer")
-    @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     Response updateAnswer(@PathParam("id") String id, Answer answer){
         redisStore.answerQuestion(id, answer)
