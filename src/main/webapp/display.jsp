@@ -1,15 +1,21 @@
 <%@include file="include/header.jsp" %>
 
 <script>
-
     $(function() {
-        renderQuestion.render("renderQuestionOne", 2);
+        renderQuestion.fromQueryString();
+        renderQuestion.displayLatest();
     });
-
 </script>
 
-<span id="renderQuestionOne"></span>
 
+<span id="questionHeaderPlaceholder"></span>
+<span id="queryStringPlaceholder"></span>
+
+</hr>
+
+<h3>Latest Questions</h3>
+
+<span id="latestQuestionsPlaceholder"></span>
 
 
 <%@include file="include/footer.jsp" %>

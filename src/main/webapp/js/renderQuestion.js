@@ -1,21 +1,16 @@
 var renderQuestion = (function (){
 
-    function render(element, id){
-        var success = function(data){
-            var selector = $('#' + element);
-            var dateValue = moment(data.date);
-            var fromNow = dateValue.format("MM/DD/YYYY");
-
-            selector.load("include/displayQuestion.html", function(){
-                $("#nameContent").append(data.name);
-                $("#dateContent").append(fromNow);
-                $("#questionContent").append(data.question);
-                $("#answerContent").append(data.answer);
-            });
-
+    function render(parentElement, id){
+        var success = function(questionHolder){
+            if(!questionHolder.question){
+                return;
+            }
+            $('#questionHeaderPlaceholder').append("<h3>Question</h3>");
+            displayElementFromQuestion(parentElement, questionHolder);
         };
 
-        getContent(id, success);
+        if(parentElement != null && id != null)
+            getContent(id, success);
     }
 
     function getContent(id, successFunction){
@@ -27,8 +22,71 @@ var renderQuestion = (function (){
         });
     }
 
+    function buildNameDateWrapper(name, fromNow) {
+        var nameDateWrapper = $("<div/>", {
+            class: 'rightAlign alignMiddleForBootstrap'
+        });
+        var nameElement = $("<b/>", {
+            text: name
+        });
+        nameDateWrapper.append(nameElement);
+        nameDateWrapper.append(" : ");
+        nameDateWrapper.append(fromNow);
+        return nameDateWrapper;
+    }
+
+    function displayElementFromQuestion(element, questionHolder) {
+        var selector = $('#' + element);
+        var dateValue = moment(questionHolder.date);
+        var fromNow = dateValue.fromNow();
+        var answer = "Question Not Answered Yet";
+        if (questionHolder.answer != null)
+            answer = questionHolder.answer;
+
+
+        var nameDateWrapper = buildNameDateWrapper(questionHolder.name, fromNow);
+        var component = $("<div/>",{
+            class: 'container'
+        });
+
+        var panelHeader = $("<div/>",{
+            class: "panel-heading",
+            text: "Q: " + questionHolder.question
+        });
+
+        var panelBody = $("<div/>",{
+            class: "panel-body",
+            text: "A: " + answer
+        });
+        var panelWrapper = $("<div/>", {
+           class: "panel panel-info"
+        });
+
+        panelWrapper.append(panelHeader);
+        panelWrapper.append(panelBody);
+        component.append(nameDateWrapper);
+        component.append(panelWrapper);
+        selector.append(component);
+
+    }
+
+    function renderQuestionFromQueryString(){
+        var id = window.location.search.substring(4);
+        if(!isNaN(parseInt(id))){
+            render("queryStringPlaceholder", id);
+        }
+    }
+
+    function displayLatest(){
+        var selector = $('#latestQuestionsPlaceholder');
+
+
+    }
+
     return {
-        render: render
+        fromId: render,
+        displayLatest: displayLatest,
+        fromQueryString : renderQuestionFromQueryString
     };
 
 })();
