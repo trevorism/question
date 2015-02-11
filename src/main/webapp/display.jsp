@@ -2,18 +2,15 @@
 
 <script>
     $(function() {
-        renderQuestion.fromQueryString();
-        renderQuestion.displayLatest();
+        renderQuestion.renderQuestionFromQueryParameterIfItExists();
     });
 </script>
+<span id="questionFromQueryStringPlaceholder"></span>
 
-
-<span id="questionHeaderPlaceholder"></span>
-<span id="queryStringPlaceholder"></span>
 
 </hr>
 
-<h3>Latest Questions</h3>
+<h3>Latest Questions </h3>
 
 <span id="latestQuestionsPlaceholder"></span>
 

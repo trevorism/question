@@ -1,7 +1,5 @@
 package com.brooks.question
 
-import com.brooks.question.model.Question
-import com.brooks.question.persist.RedisStore
 import redis.clients.jedis.Jedis
 
 /**
@@ -10,14 +8,17 @@ import redis.clients.jedis.Jedis
 class HelloWorldTest {
 
     public static void main(String [] args){
-        RedisStore redisStore = new RedisStore();
+        getKey()
+        //Jedis jedis = new Jedis("localhost");
+        //jedis.connect();
 
-        redisStore.createQuestion(new Question(question: "Who are you?"))
+        //jedis.ping();
+        //jedis.close();
     }
 
     private static void getKey() {
         Jedis jedis = new Jedis("localhost")
-        jedis.connect();
+        //jedis.connect();
         def get = jedis.get("first")
         println get
         jedis.close()

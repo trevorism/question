@@ -28,3 +28,8 @@ if(project.hasProperty("deployLoc")){
         into deployLoc
     }
 }
+
+
+jettyRun{
+    webXml = file("test/webapp/WEB-INF/web.xml")
+}

@@ -2,8 +2,8 @@ package com.brooks.question.api
 
 import com.brooks.question.model.Answer
 import com.brooks.question.model.Question
-import com.brooks.question.persist.RedisStore
-import com.brooks.question.persist.Store
+import com.brooks.question.persist.RedisQuestionApi
+import com.brooks.question.persist.QuestionApi
 
 import javax.ws.rs.Consumes
 import javax.ws.rs.DELETE
@@ -23,7 +23,7 @@ import javax.ws.rs.core.Response
 @Path("/question/")
 class QuestionEndpoint {
 
-    private static final Store redisStore = new RedisStore()
+    private static final QuestionApi redisStore = new RedisQuestionApi()
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -61,12 +61,21 @@ class QuestionEndpoint {
         redisStore.getUnansweredQuestions()
     }
 
+    @GET
+    @Path("latestAnswered")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    List<Question> getLatestAnsweredQuestions(){
+        redisStore.getLatestAnsweredQuestions()
+    }
+
+
     @POST
     @Path("{id}/answer")
     @Consumes(MediaType.APPLICATION_JSON)
     Response answerQuestion(@PathParam("id") String id, Answer answer){
         redisStore.answerQuestion(id, answer)
-        return Response.ok()
+        return Response.ok().build()
     }
 
     @PUT
@@ -74,7 +83,7 @@ class QuestionEndpoint {
     @Consumes(MediaType.APPLICATION_JSON)
     Response updateAnswer(@PathParam("id") String id, Answer answer){
         redisStore.answerQuestion(id, answer)
-        return Response.ok()
+        return Response.ok().build()
     }
 
     @DELETE

@@ -1,19 +1,43 @@
 var renderQuestion = (function (){
 
-    function render(parentElement, id){
+    function renderLatestQuestions(){
+        var selector = $("#latestQuestionsPlaceholder");
+
+        getLatestQuestions(function(data){
+            for(var i=0, len=data.length; i < len; i++){
+                selector.append(renderQuestion(data[i]));
+            }
+        });
+    }
+
+    function getLatestQuestions(successFunction){
+        $.ajax({
+            type: "GET",
+            contentType: 'application/json',
+            url: "service/question/latestAnswered",
+            success: successFunction
+        });
+    }
+
+
+    function renderQuestionFromQueryParameterIfItExists(){
+        var selector = $('#questionFromQueryStringPlaceholder');
+        var id = getIdFromQueryString();
+
         var success = function(questionHolder){
             if(!questionHolder.question){
                 return;
             }
-            $('#questionHeaderPlaceholder').append("<h3>Question</h3>");
-            displayElementFromQuestion(parentElement, questionHolder);
+
+            selector.append("<h3>Question</h3>");
+            selector.append(renderQuestion(questionHolder));
         };
 
-        if(parentElement != null && id != null)
-            getContent(id, success);
+        if(selector != null && id != null)
+            getQuestionById(id, success);
     }
 
-    function getContent(id, successFunction){
+    function getQuestionById(id, successFunction){
         $.ajax({
             type: "GET",
             contentType: 'application/json',
@@ -22,7 +46,7 @@ var renderQuestion = (function (){
         });
     }
 
-    function buildNameDateWrapper(name, fromNow) {
+    function buildNameDateDisplay(name, fromNow) {
         var nameDateWrapper = $("<div/>", {
             class: 'rightAlign alignMiddleForBootstrap'
         });
@@ -35,8 +59,26 @@ var renderQuestion = (function (){
         return nameDateWrapper;
     }
 
-    function displayElementFromQuestion(element, questionHolder) {
-        var selector = $('#' + element);
+    function buildQuestionAnswerDisplay(questionHolder, answer) {
+        var panelHeader = $("<div/>", {
+            class: "panel-heading",
+            text: "Q: " + questionHolder.question
+        });
+
+        var panelBody = $("<div/>", {
+            class: "panel-body",
+            text: "A: " + answer
+        });
+        var panelWrapper = $("<div/>", {
+            class: "panel panel-info"
+        });
+
+        panelWrapper.append(panelHeader);
+        panelWrapper.append(panelBody);
+        return panelWrapper;
+    }
+
+    function renderQuestion(questionHolder) {
         var dateValue = moment(questionHolder.date);
         var fromNow = dateValue.fromNow();
         var answer = "Question Not Answered Yet";
@@ -44,49 +86,48 @@ var renderQuestion = (function (){
             answer = questionHolder.answer;
 
 
-        var nameDateWrapper = buildNameDateWrapper(questionHolder.name, fromNow);
+        var nameDateWrapper = buildNameDateDisplay(questionHolder.name, fromNow);
         var component = $("<div/>",{
             class: 'container'
         });
 
-        var panelHeader = $("<div/>",{
-            class: "panel-heading",
-            text: "Q: " + questionHolder.question
-        });
-
-        var panelBody = $("<div/>",{
-            class: "panel-body",
-            text: "A: " + answer
-        });
-        var panelWrapper = $("<div/>", {
-           class: "panel panel-info"
-        });
-
-        panelWrapper.append(panelHeader);
-        panelWrapper.append(panelBody);
+        var panelWrapper = buildQuestionAnswerDisplay(questionHolder, answer);
         component.append(nameDateWrapper);
         component.append(panelWrapper);
-        selector.append(component);
 
+        return component;
     }
 
-    function renderQuestionFromQueryString(){
+    function getIdFromQueryString(){
         var id = window.location.search.substring(4);
         if(!isNaN(parseInt(id))){
-            render("queryStringPlaceholder", id);
+            return id;
         }
     }
 
-    function displayLatest(){
-        var selector = $('#latestQuestionsPlaceholder');
+    function displayQuestion(parentElement, id){
+        var selector = $('#' + parentElement);
 
+        var success = function(questionHolder){
+            if(!questionHolder.question){
+                return;
+            }
+            selector.append(renderQuestion(questionHolder));
+        };
+
+        if(selector != null && id != null)
+            getQuestionById(id, success);
 
     }
 
+
+    $(function(){
+        renderLatestQuestions();
+    });
+
     return {
-        fromId: render,
-        displayLatest: displayLatest,
-        fromQueryString : renderQuestionFromQueryString
+        renderQuestionFromQueryParameterIfItExists: renderQuestionFromQueryParameterIfItExists,
+        displayQuestion: displayQuestion
     };
 
 })();
