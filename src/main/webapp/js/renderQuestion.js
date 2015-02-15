@@ -1,16 +1,18 @@
-var renderQuestion = (function (){
+var renderQuestion = (function () {
 
-    function renderLatestQuestions(){
+    function renderLatestQuestions() {
         var selector = $("#latestQuestionsPlaceholder");
 
-        getLatestQuestions(function(data){
-            for(var i=0, len=data.length; i < len; i++){
-                selector.append(renderQuestion(data[i]));
-            }
-        });
+        if (selector.length) {
+            getLatestQuestions(function (data) {
+                for (var i = 0, len = data.length; i < len; i++) {
+                    selector.append(renderQuestion(data[i]));
+                }
+            });
+        }
     }
 
-    function getLatestQuestions(successFunction){
+    function getLatestQuestions(successFunction) {
         $.ajax({
             type: "GET",
             contentType: 'application/json',
@@ -20,12 +22,12 @@ var renderQuestion = (function (){
     }
 
 
-    function renderQuestionFromQueryParameterIfItExists(){
+    function renderQuestionFromQueryParameterIfItExists() {
         var selector = $('#questionFromQueryStringPlaceholder');
         var id = getIdFromQueryString();
 
-        var success = function(questionHolder){
-            if(!questionHolder.question){
+        var success = function (questionHolder) {
+            if (!questionHolder.questionText) {
                 return;
             }
 
@@ -33,11 +35,11 @@ var renderQuestion = (function (){
             selector.append(renderQuestion(questionHolder));
         };
 
-        if(selector != null && id != null)
+        if (selector != null && id != null)
             getQuestionById(id, success);
     }
 
-    function getQuestionById(id, successFunction){
+    function getQuestionById(id, successFunction) {
         $.ajax({
             type: "GET",
             contentType: 'application/json',
@@ -53,9 +55,10 @@ var renderQuestion = (function (){
         var nameElement = $("<b/>", {
             text: name
         });
-        nameDateWrapper.append(nameElement);
-        if(name != null)
+        if (name != null) {
+            nameDateWrapper.append(nameElement);
             nameDateWrapper.append(" : ");
+        }
         nameDateWrapper.append(fromNow);
         return nameDateWrapper;
     }
@@ -88,7 +91,7 @@ var renderQuestion = (function (){
 
 
         var nameDateWrapper = buildNameDateDisplay(questionHolder.name, fromNow);
-        var component = $("<div/>",{
+        var component = $("<div/>", {
             class: 'container'
         });
 
@@ -99,18 +102,18 @@ var renderQuestion = (function (){
         return component;
     }
 
-    function getIdFromQueryString(){
+    function getIdFromQueryString() {
         var id = window.location.search.substring(4);
-        if(!isNaN(parseInt(id))){
+        if (!isNaN(parseInt(id))) {
             return id;
         }
     }
 
-    function displayQuestion(parentElement, id){
+    function displayQuestion(parentElement, id) {
         var selector = $('#' + parentElement);
 
-        var success = function(questionHolder){
-            if(!questionHolder.question){
+        var success = function (questionHolder) {
+            if (!questionHolder.questionText) {
                 return;
             }
             selector.append(renderQuestion(questionHolder));
@@ -122,7 +125,7 @@ var renderQuestion = (function (){
     }
 
 
-    $(function(){
+    $(function () {
         renderLatestQuestions();
     });
 

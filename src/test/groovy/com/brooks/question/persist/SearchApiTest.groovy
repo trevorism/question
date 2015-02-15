@@ -102,4 +102,9 @@ class SearchApiTest {
         assert !converted.answer
     }
 
+    public static void main(String [] args){
+        SearchApi searchApi = new SearchApi(new FileBasedLucene("lucene.db"))
+        searchApi.getLatestAnsweredQuestions().each {println it}
+    }
+
 }
