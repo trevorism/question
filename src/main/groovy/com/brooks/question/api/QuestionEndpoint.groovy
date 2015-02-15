@@ -2,7 +2,7 @@ package com.brooks.question.api
 
 import com.brooks.question.model.Answer
 import com.brooks.question.model.Question
-import com.brooks.question.persist.RedisQuestionApi
+import com.brooks.question.persist.SearchApi
 import com.brooks.question.persist.QuestionApi
 
 import javax.ws.rs.Consumes
@@ -23,26 +23,26 @@ import javax.ws.rs.core.Response
 @Path("/question/")
 class QuestionEndpoint {
 
-    private static final QuestionApi redisStore = new RedisQuestionApi()
+    private static final QuestionApi questionApi = new SearchApi(new FileBasedLucene("lucene.db"))
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     Set<String> getAllQuestionIds(){
-        redisStore.getAllQuestionIds()
+        questionApi.getAllQuestionIds()
     }
 
     @GET
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
     Question getQuestion(@PathParam("id") String id){
-        redisStore.getQuestion(id)
+        questionApi.getQuestion(id)
     }
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     String createQuestion(Question question){
-        redisStore.createQuestion(question)
+        questionApi.createQuestion(question)
     }
 
     @GET
@@ -58,7 +58,7 @@ class QuestionEndpoint {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     List<Question> getUnansweredQuestions(){
-        redisStore.getUnansweredQuestions()
+        questionApi.getUnansweredQuestions()
     }
 
     @GET
@@ -66,36 +66,29 @@ class QuestionEndpoint {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     List<Question> getLatestAnsweredQuestions(){
-        redisStore.getLatestAnsweredQuestions()
+        questionApi.getLatestAnsweredQuestions()
     }
 
 
     @POST
-    @Path("{id}/answer")
-    @Consumes(MediaType.APPLICATION_JSON)
-    Response answerQuestion(@PathParam("id") String id, Answer answer){
-        redisStore.answerQuestion(id, answer)
-        return Response.ok().build()
-    }
-
     @PUT
     @Path("{id}/answer")
     @Consumes(MediaType.APPLICATION_JSON)
-    Response updateAnswer(@PathParam("id") String id, Answer answer){
-        redisStore.answerQuestion(id, answer)
+    Response answerQuestion(@PathParam("id") String id, String answerText){
+        questionApi.answerQuestion(id, answerText)
         return Response.ok().build()
     }
 
     @DELETE
     @Path("{id}")
-    boolean deleteQuestion(@PathParam("id") String id){
-        redisStore.deleteQuestion(id)
+    void deleteQuestion(@PathParam("id") String id){
+        questionApi.deleteQuestion(id)
     }
 
     @DELETE
     @Path("answer/{id}")
-    boolean deleteAnswer(@PathParam("id") String id){
-        redisStore.deleteAnswer(id)
+    void deleteAnswer(@PathParam("id") String id){
+        questionApi.deleteAnswer(id)
     }
 
 

@@ -1,11 +1,14 @@
 package com.brooks.question.model
 
+import groovy.transform.ToString
+
 /**
  * @author tbrooks
  */
+@ToString(includeFields = true)
 class Answer {
 
-    long id
-    String answer
-    Date date
+    String answerText
+    Date dateAnswered
+
 }
