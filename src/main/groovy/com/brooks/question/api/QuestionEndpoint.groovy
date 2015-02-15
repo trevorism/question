@@ -69,9 +69,7 @@ class QuestionEndpoint {
         questionApi.getLatestAnsweredQuestions()
     }
 
-
     @POST
-    @PUT
     @Path("{id}/answer")
     @Consumes(MediaType.APPLICATION_JSON)
     Response answerQuestion(@PathParam("id") String id, String answerText){

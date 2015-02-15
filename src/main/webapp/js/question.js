@@ -4,7 +4,7 @@ $( document ).ready(function() {
     $('#submitButton').click(function(){
         var data = {};
         data.name = $("#nameId").val();
-        data.question = $("#questionId").val();
+        data.questionText = $("#questionId").val();
 
         $.ajax({
             type: "POST",

@@ -54,15 +54,16 @@ var renderQuestion = (function (){
             text: name
         });
         nameDateWrapper.append(nameElement);
-        nameDateWrapper.append(" : ");
+        if(name != null)
+            nameDateWrapper.append(" : ");
         nameDateWrapper.append(fromNow);
         return nameDateWrapper;
     }
 
-    function buildQuestionAnswerDisplay(questionHolder, answer) {
+    function buildQuestionAnswerDisplay(questionText, answer) {
         var panelHeader = $("<div/>", {
             class: "panel-heading",
-            text: "Q: " + questionHolder.question
+            text: "Q: " + questionText
         });
 
         var panelBody = $("<div/>", {
@@ -79,11 +80,11 @@ var renderQuestion = (function (){
     }
 
     function renderQuestion(questionHolder) {
-        var dateValue = moment(questionHolder.date);
+        var dateValue = moment(questionHolder.dateAsked);
         var fromNow = dateValue.fromNow();
         var answer = "Question Not Answered Yet";
         if (questionHolder.answer != null)
-            answer = questionHolder.answer;
+            answer = questionHolder.answer.answerText;
 
 
         var nameDateWrapper = buildNameDateDisplay(questionHolder.name, fromNow);
@@ -91,7 +92,7 @@ var renderQuestion = (function (){
             class: 'container'
         });
 
-        var panelWrapper = buildQuestionAnswerDisplay(questionHolder, answer);
+        var panelWrapper = buildQuestionAnswerDisplay(questionHolder.questionText, answer);
         component.append(nameDateWrapper);
         component.append(panelWrapper);
 

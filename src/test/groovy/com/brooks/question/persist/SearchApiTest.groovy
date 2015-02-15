@@ -102,23 +102,4 @@ class SearchApiTest {
         assert !converted.answer
     }
 
-
-    @Test
-    void testGetLatestAnsweredQuestions() {
-        SearchApi searchApi = new SearchApi(new MemoryBasedLucene())
-
-        //Insert
-        searchApi.createQuestion(new Question(questionText: "1q", answer: new Answer(answerText: "3answer", dateAnswered: new Date())))
-        searchApi.createQuestion(new Question(questionText: "2q", answer: new Answer(answerText: "1answer", dateAnswered: new Date())))
-        searchApi.createQuestion(new Question(questionText: "3q", answer: new Answer(answerText: "2answer", dateAnswered: new Date())))
-        searchApi.createQuestion(new Question(questionText: "4q"))
-        searchApi.createQuestion(new Question(questionText: "5q"))
-
-        //
-        searchApi.searchQuestions("2").each {
-            println it
-        }
-
-    }
-
 }
