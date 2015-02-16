@@ -19,7 +19,10 @@ $( document ).ready(function() {
         });
     });
 
-
+    $('#searchButton').click(function(){
+        var searchId = $("#searchId").val();
+        window.location.href = "results.jsp?search=" + searchId
+    })
 
 });
 

@@ -12,6 +12,32 @@ var renderQuestion = (function () {
         }
     }
 
+    function renderSearchResults(){
+        var selector = $("#searchResults");
+
+        if (selector.length) {
+            var search = getSearchFromQueryString();
+            getSearchResults(search, function (data) {
+                if(data.length == 0){
+                    selector.append("<h4>No Results Found</h4>")
+                }
+
+                for (var i = 0, len = data.length; i < len; i++) {
+                    selector.append(renderQuestion(data[i]));
+                }
+            });
+        }
+    }
+
+    function getSearchResults(search, successFunction) {
+        $.ajax({
+            type: "GET",
+            contentType: 'application/json',
+            url: "service/question/search/" + search,
+            success: successFunction
+        });
+    }
+
     function getLatestQuestions(successFunction) {
         $.ajax({
             type: "GET",
@@ -109,6 +135,12 @@ var renderQuestion = (function () {
         }
     }
 
+    function getSearchFromQueryString() {
+        var id = window.location.search.substring(8);
+        return id;
+    }
+
+
     function displayQuestion(parentElement, id) {
         var selector = $('#' + parentElement);
 
@@ -127,6 +159,7 @@ var renderQuestion = (function () {
 
     $(function () {
         renderLatestQuestions();
+        renderSearchResults();
     });
 
     return {

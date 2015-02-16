@@ -49,8 +49,8 @@ class QuestionEndpoint {
     @Path("search/{query}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    Response searchQuestions(@PathParam("query") String query){
-        throw new WebApplicationException(404);
+    List<Question> searchQuestions(@PathParam("query") String query){
+        questionApi.searchQuestions(query)
     }
 
     @GET

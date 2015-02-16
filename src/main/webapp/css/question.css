@@ -4,7 +4,7 @@ textarea {
 
 .titleBar{
     height: 35px;
-    background-color: #AAAAAA;
+    background-color: #BBBBBB;
 }
 
 .leftAlignBar{
@@ -23,6 +23,7 @@ textarea {
 }
 
 .linkPadding{
+    color: darkblue;
     padding-left: 5px;
     padding-right: 10px;
 }
