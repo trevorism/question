@@ -1,5 +1,5 @@
 
-$( document ).ready(function() {
+$(function() {
 
     $('#submitButton').click(function(){
         var data = {};
@@ -13,6 +13,12 @@ $( document ).ready(function() {
             dataType: 'text',
             data: JSON.stringify(data),
             success: function(data){
+                $("#submitResult").show();
+                var linkValueSelector = $("#linkValue");
+                linkValueSelector.empty();
+                var str = window.location.href;
+                str = str.substring(0, str.length-8);
+                linkValueSelector.append(str + "display.jsp?id=" + data);
 
             }
 

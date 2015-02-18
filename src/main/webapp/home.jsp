@@ -17,6 +17,16 @@
     </div>
     <button id="submitButton" class="btn btn-primary">Submit</button>
 
+    <br/>
+    <br/>
+    <br/>
+
+    <blockquote id="submitResult" style="display:none">
+    <div class="row">
+        <div class="col-md-3">Link</div>
+        <div id="linkValue" class="col-md-9"></div>
+    </div>
+    </blockquote>
 </div>
 
 <%@include file="include/footer.jsp" %>
