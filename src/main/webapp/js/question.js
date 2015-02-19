@@ -16,9 +16,7 @@ $(function() {
                 $("#submitResult").show();
                 var linkValueSelector = $("#linkValue");
                 linkValueSelector.empty();
-                var str = window.location.href;
-                str = str.substring(0, str.length-8);
-                linkValueSelector.append(str + "display.jsp?id=" + data);
+                linkValueSelector.append("http://question.trevorism.com/display.jsp?id=" + data);
 
             }
 
