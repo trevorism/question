@@ -70,6 +70,14 @@ class QuestionEndpoint {
     }
 
     @POST
+    @Path("{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    Response updateQuestion(@PathParam("id") String id, String newQuestionText){
+        questionApi.updateQuestion(id, newQuestionText)
+        return Response.ok().build()
+    }
+
+    @POST
     @Path("{id}/answer")
     @Consumes(MediaType.APPLICATION_JSON)
     Response answerQuestion(@PathParam("id") String id, String answerText){

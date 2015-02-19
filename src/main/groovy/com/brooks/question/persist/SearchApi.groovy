@@ -69,6 +69,18 @@ class SearchApi implements QuestionApi{
     }
 
     @Override
+    void updateQuestion(String id, String questionText) {
+        IndexWriter indexWriter = getIndexWriter()
+        Question question = getQuestion(id)
+        question.questionText = questionText;
+
+        Document document = QuestionDocumentConverter.convert(question)
+        indexWriter.updateDocument(createTerm(question.id), document)
+        indexWriter.close()
+
+    }
+
+    @Override
     void answerQuestion(String id, String answerText) {
         Question question = getQuestion(id)
         Answer answer = new Answer(answerText: answerText, dateAnswered: new Date())
