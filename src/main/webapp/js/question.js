@@ -6,6 +6,9 @@ $(function() {
         data.name = $("#nameId").val();
         data.questionText = $("#questionId").val();
 
+        if(data.questionText == null || data.questionText == "")
+            return;
+
         $.ajax({
             type: "POST",
             contentType : 'application/json',
