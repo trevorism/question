@@ -186,7 +186,10 @@ class SearchApi implements QuestionApi{
         IndexReader reader
         try {
             reader = DirectoryReader.open(lucene.directory)
-            IdGenerator.instance.setId(reader.maxDoc())
+            IndexSearcher indexSearcher = new IndexSearcher(reader)
+            TopDocs search = indexSearcher.search(new MatchAllDocsQuery(), 1, new Sort(new SortField("dateAsked", SortField.Type.STRING, true)))
+            ScoreDoc scoreDoc = search.scoreDocs[0]
+            IdGenerator.instance.setId(scoreDoc.doc)
 
         } catch (Exception) {
 
